@@ -1,7 +1,6 @@
 package com.bin.controller;
 
 import com.bin.domain.Company;
-import com.bin.domain.Permission;
 import com.bin.domain.User;
 import com.bin.domain.User_Company;
 import com.bin.service.CompanyService;
@@ -10,7 +9,6 @@ import com.bin.service.User_Company_Service;
 import com.bin.util.CreateCompanyFolderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
