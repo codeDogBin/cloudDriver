@@ -50,14 +50,16 @@ ${user.name}，欢迎登录
 <c:if test="${permission.upload}">
 
     <button class="levelOne" onclick="createFolder()" >新建文件夹</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <c:if test="${fway_id > 0}">
+
     <form method="post" action="/uploadFile" enctype="multipart/form-data">
             <input type="hidden" id="company_id"name="company_id"  value="${company_id}" >
             <input type="hidden" id="fway_id"name="fway_id" value="${fway_id}"  >
+    <c:if test="${fway_id > 0}">
             <input type="file" name="multipartFiles" >
             <input type="submit" value="提交">
-    </form> <br>
     </c:if>
+    </form> <br>
+
 </c:if>
 <%--<span id="company_id">${f.company_id}</span>--%>
 <%--<span id="fway_id">${f.fway_id}</span>--%>

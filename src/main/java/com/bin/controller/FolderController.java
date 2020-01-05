@@ -66,6 +66,10 @@ public class FolderController {
      @ResponseBody
      @RequestMapping("/createFolder.do")
      public String  createFolder(String name,int fway_id,int company_id){
+         Folder byNameFidCid = folderService.findByNameFidCid(name, fway_id, company_id);
+         if(byNameFidCid!=null){
+             return "有同名文件夹";
+         }
          String fway =fway_id == 0 ?companyService.selectCompany(company_id).getWay():folderService.findByFidAsId(fway_id).getWay();
          try {
              fway = CreateFolderUtil.createFloder(fway);
@@ -96,13 +100,10 @@ public class FolderController {
                                 int fway_id,
                                 int company_id,
                                 HttpServletRequest request){
-         List list = new ArrayList<>();
          Folder folder = folderService.findByFidAsId(folder_id);
-         list.add(folder);
-         ergodicFolFilByFolId(folder_id,company_id,list);
-         if(list.size()>0){
-             expireFol(list);
-         }
+         folder.setState(false);
+         folder = folderService.chongMing(folder);
+         folderService.expireFol(folder);
          request.setAttribute("msg","删除成功");
          return "forward:toFolder.do?company_id="+company_id+"&fway_id="+fway_id;
      }
@@ -150,15 +151,7 @@ public class FolderController {
      * @param list
      * @return void
      */
-    public void expireFol(List list){
-        for (Object temp : list) {
-            if(temp.getClass()==Folder.class){
-                folderService.expireFolById(((Folder)temp).getId());
-            }else{
-                filService.expireFilById(((Fil)temp).getId());
-            }
-        }
-    }
+
 
 
 }

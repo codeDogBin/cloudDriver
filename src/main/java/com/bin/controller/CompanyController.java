@@ -68,16 +68,14 @@ public class CompanyController {
      * @return java.util.List
      */
     @ResponseBody
-    @RequestMapping("findUserCompanyAJAX.do")
+    @RequestMapping("/findUserCompanyAJAX.do")
     public List findUserCompany(int user_id){
         List<Company> userCompanies = companyService.findCompanyByUserID(user_id);
         List<Company> allCompanies = companyService.selectAll();
         allCompanies.removeAll(userCompanies);
-//        System.out.println(userCompanies);
-//        System.out.println(allCompanies);
         List list = new ArrayList();
         list.add(userCompanies);
-        list.add(allCompanies);
+//        list.add(allCompanies);
         return list;
     }
 
@@ -104,7 +102,13 @@ public class CompanyController {
         }
         return "添加成功";
     }
-
+    /*
+     * 功能描述 unbindUserCompany
+     * @Author bin
+     * @param user_id
+     * @param companies_id
+     * @return java.lang.String
+     */
     @ResponseBody
     @RequestMapping("/unbindUserCompanyAJAX.do")
     public String unbindUserCompany(@RequestParam("user_id") int user_id, @RequestParam("companies_id") int[] companies_id){
@@ -122,4 +126,22 @@ public class CompanyController {
         }
         return "解绑成功";
     }
+    /*
+     * 功能描述 findCompanyByName
+     * @Author bin
+     * @param name
+     * @param user_id
+     * @return java.util.List<com.bin.domain.Company>
+     */
+    @ResponseBody
+    @RequestMapping("findCompanyByNameAJAX.do")
+    public List<Company> findCompanyByName(String name, int user_id){
+        List<Company> companies = companyService.SelectByName(name);
+        List<Company> companyByUserID = companyService.findCompanyByUserID(user_id);
+        companies.removeAll(companyByUserID);
+        return companies;
+    }
+
+
+
 }

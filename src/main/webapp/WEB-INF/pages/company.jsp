@@ -13,21 +13,17 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script>
         var user_id = -1;
-
         $(function () {
             function shuaxin(user_id){
                 $.ajax({
                     type: "post",
                     url:"findUserCompanyAJAX.do",
                     success:function (result) {
-                        var div = null;
+                        result
                         for (var i = 0; i < result.length ; i++) {
                             // i==0?div=$(".userCompany"):div=$(".company")
                             if(i===0){
-                                div = $("#userCompany");
-                                div.html("");
-                            }else{
-                                div = $("#company");
+                                var div = $("#userCompany");
                                 div.html("");
                             }
                             for (var j = 0; j < result[i].length ; j++) {
@@ -58,6 +54,32 @@
                 }
                 shuaxin(user_id);
             });
+            //查询公司的点击事件
+             $("#selectCompany").on("click",function () {
+                 user_id = $("#user_id").val();
+                 var name = $("#company_name").val();
+                 $.ajax({
+                     type:"post",
+                     url:"findCompanyByNameAJAX.do",
+                     success:function (result) {
+                         var div = $("#company");
+                         div.html("");
+                         for (var i = 0; i < result.length ; i++) {
+                             var temp = result[i];
+                             console.log(temp);
+                             var input = $('<input>');
+                             $(input).attr('type','checkbox');
+                             $(input).attr('name','companies_id');
+                             $(input).attr('value',temp.id);
+                             div.append(input);
+                             div.append(temp.name);
+                             div.append($('<br>'))
+                         }
+                     },
+                     data:{"user_id":user_id,"name":name},
+                     traditional:true
+                 });
+             });
 
             // 绑定的点击事件
             $("#bind").on("click",function () {
@@ -81,7 +103,6 @@
                     traditional: true
                 });
             });
-
             //解绑的点击事件
             $("#unbind").on("click",function () {
                 user_id = $("#user_id").val();
@@ -116,13 +137,18 @@
     <option  value="${user.id}" onchange="shu()">${user.name}</option>
 </c:forEach>
 </select><br>
-<form>
+
     <div>已绑定公司<div id="userCompany"></div></div>
-    <input type="button" id="unbind" value="解除绑定">
-</form>
-<%--<form>--%>
+    <input type="button" id="unbind" value="解除绑定"><br>
+
+    <div>
+    输入公司名称<br>
+    <input type="text"  id="company_name" ><br>
+    <input type="button" id="selectCompany" value="查询">
+    </div>
     <div >未绑定公司<div id="company"></div></div>
     <input type="button" id="bind" value="绑定">
-<%--</form>--%>
+
+
 </body>
 </html>

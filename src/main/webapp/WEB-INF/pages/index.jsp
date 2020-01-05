@@ -15,8 +15,10 @@
 <body>
 <span style="color: red">${msg}</span><br>
 ${user.name}，欢迎登录</br>
+<c:if test="${permission.readall}">
 <a href="/toAllExpire ">过期文件</a>
 <a href="/toCompany">分配公司</a>
+</c:if>
 <a href="/index.do">刷新</a>
 
 <form action="/createCompany.do" method="post">

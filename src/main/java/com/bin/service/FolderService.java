@@ -41,16 +41,7 @@ public class FolderService {
     public Folder findByFidAsId(int fway_id){
         return folderDao.findByFidAsId(fway_id);
     }
-    /*
-     * 功能描述 将文件夹设置为过期
-     * @Author bin
-     * @param fil_id 
-     * @return void        
-     */
-    public void expireFolById(int fil_id){
-        folderDao.expireFolById(fil_id);
-    }
-    
+
     public void delFolByID(int id){
         folderDao.delFolById(id);
     }
@@ -62,5 +53,32 @@ public class FolderService {
      */
     public List<Folder> allExpire(){
        return folderDao.allExpire();
+    }
+
+    public Folder chongMing(Folder folder) {
+        Folder temp;
+        temp = folderDao.findByNameFidCidState(folder);
+        while(temp != null){
+            folder.setName(folder.getName()+"_副本");
+            temp = folderDao.findByNameFidCidState(folder);
+        }
+        return folder;
+    }
+
+    public Folder findByNameFidCid(String name,int fway_id,int company_id){
+       return folderDao.findByNameFidCid(name,fway_id,company_id);
+    }
+
+    public Folder findExpireByID(int id){
+        return folderDao.findExpireByID(id);
+    }
+
+
+    public void expireFol(Folder folder) {
+        folderDao.expireFol(folder);
+    }
+
+    public void recoverFol(Folder fol) {
+        folderDao.recoverFol(fol);
     }
 }

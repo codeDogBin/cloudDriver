@@ -36,8 +36,8 @@ public class FilService {
      * @param fil_id 
      * @return void        
      */
-    public void expireFilById(int fil_id){
-        filDao.expireFileById(fil_id);
+    public void expireFil(Fil fil){
+        filDao.expireFileById(fil);
     }  
     /*
      * 功能描述 查询所有过期文件
@@ -45,6 +45,8 @@ public class FilService {
      * @param  
      * @return java.util.List<com.bin.domain.Fil>        
      */
+
+
     public List<Fil> allExpire(){
        return filDao.allExpire();
     }
@@ -54,7 +56,33 @@ public class FilService {
      * @param null
      * @return
      */
-    public void delFilByID(int id){
-        filDao.delFilById(id);
+    public void delFilByID(int fil_id){
+        filDao.delFilById(fil_id);
+    }
+    /*
+     * 功能描述 chongMing
+     * @Author bin
+     * @param fil
+     * @return com.bin.domain.Fil
+     */
+    public Fil chongMing(Fil fil) {
+        Fil temp;
+         temp = filDao.findByNameFidState(fil);
+        while(temp != null){
+            fil.setName(fil.getName()+"_副本");
+            temp = filDao.findByNameFidState(fil);
+        }
+        return fil;
+    }
+
+    public void recoverFil(Fil fil){
+        filDao.recoverFil(fil);
+    }
+
+    public Fil findById(int fil_id){
+       return filDao.findById(fil_id);
+    }
+    public Fil findExpireById(int fil_id){
+        return filDao.findExpireById(fil_id);
     }
 }

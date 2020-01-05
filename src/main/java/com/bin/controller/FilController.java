@@ -63,6 +63,8 @@ public class FilController {
                 fil.setWay(folder.getWay()+File.separator+way);
                 fil.setFol_id(Integer.parseInt(fway_id));
                 fil.setCtime(new Timestamp(System.currentTimeMillis()));
+                fil.setState(true);
+                fil = filService.chongMing(fil);
                 try {
                     //上传目的地（staticResourcesTest文件夹下）
                     File file = new File(filePath, way);
@@ -116,12 +118,14 @@ public class FilController {
                             HttpServletRequest request){
 
         try {
-            filService.expireFilById(fil_id);
+            Fil fil = filService.findExpireById(fil_id);
+            fil.setState(false);
+            fil = filService.chongMing(fil);
+            filService.expireFil(fil);
             request.setAttribute("msg","删除成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "forward:toFolder.do?company_id="+company_id+"&fway_id="+fway_id;
     }
-
 }

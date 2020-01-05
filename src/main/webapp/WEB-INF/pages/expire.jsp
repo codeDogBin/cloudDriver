@@ -12,14 +12,15 @@
     <title>过期文件</title>
 </head>
 <body>
-    <a href="/toIndex">去公司页</a><br>
+<span style="color: red"> ${msg}</span>
+    <a href="/toIndex">去公司页</a> <a href="/toAllExpire" >刷新<br>
     文件夹区<br>
     <c:forEach items="${folders}" var="folder">
-        ${folder.name}<br>
+        ${folder.name} <a href = "recoverFolder.do?fol_id=${folder.id}" >恢复</a><br>
     </c:forEach><br>
     文件区<br>
     <c:forEach items="${fils}" var="fil">
-        ${fil.name}<br>
+        ${fil.name} <a href= "recoverFil.do?fil_id=${fil.id}">恢复</a><br>
     </c:forEach><br>
 </body>
 </html>

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.bin</groupId>
-  <artifactId>jd_shop</artifactId>
+  <artifactId>cloudDriver</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -242,7 +242,7 @@
     </plugins>
 
 
-    <finalName>jd_shop</finalName>
+    <finalName>couldDriver</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>

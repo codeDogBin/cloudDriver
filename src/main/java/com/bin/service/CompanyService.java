@@ -48,6 +48,15 @@ public class CompanyService {
     public List<Company> selectAll(){
         return companyDao.selectAll();
     }
-
+    /*
+     * 功能描述 通过公司名称查找公司
+     * @Author bin
+     * @param companyName
+     * @return java.util.List<com.bin.domain.Company>
+     */
+    public List<Company> SelectByName(String companyName){
+        companyName="%"+companyName+"%";
+        return companyDao.selectByName(companyName);
+    }
 
 }
