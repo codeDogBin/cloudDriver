@@ -12,7 +12,7 @@ public interface FolderDao {
     @Select("select * from folder where fway_id = #{fway_id} and company_id = #{company_id} and state = 1")
     List<Folder> findByFidCid(@Param("fway_id") int fway_id,@Param("company_id") int company_id);
 
-    @Select("select * from folder where fway_id = #{fway_id} and company_id = #{company_id} and state = 1 limit 1")
+    @Select("select * from folder where name= #{name} and fway_id = #{fway_id} and company_id = #{company_id} and state = 1 limit 1")
     Folder findByNameFidCid(@Param("name") String name,@Param("fway_id") int fway_id,@Param("company_id") int company_id);
 
     @Select("select * from folder where id = #{fway_id} and state = 1 limit 1")

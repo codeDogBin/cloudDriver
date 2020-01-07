@@ -25,6 +25,23 @@ public class CompanyController {
     private CompanyService companyService;
     @Autowired
     private User_Company_Service user_company_service;
+
+
+    /*
+     * 功能描述 前往公司页面
+     * @Author bin
+     * @param request
+     * @return java.lang.String
+     */
+    @RequestMapping("/toCompany")
+    public String toCompany(HttpServletRequest request){
+        List<Company> companies = companyService.selectAll();
+        List<User> users = userService.findAllCus();
+        request.setAttribute("companies",companies);
+        request.setAttribute("users",users);
+        return "company";
+    }
+
     /*
      * 功能描述 创建公司
      * @Author bin
@@ -47,20 +64,7 @@ public class CompanyController {
         }
         return "forward:index.do";
     }
-    /*
-     * 功能描述 前往公司页面
-     * @Author bin
-     * @param request
-     * @return java.lang.String
-     */
-    @RequestMapping("/toCompany")
-    public String toCompany(HttpServletRequest request){
-        List<Company> companies = companyService.selectAll();
-        List<User> users = userService.findAllCus();
-        request.setAttribute("companies",companies);
-        request.setAttribute("users",users);
-        return "company";
-    }
+
     /*
      * 功能描述 查询用户绑定和未绑定的id
      * @Author bin

@@ -82,6 +82,11 @@ public class FilService {
     public Fil findById(int fil_id){
        return filDao.findById(fil_id);
     }
+
+    public Fil findExpireByNameFolid(String name,int fol_id){
+        return filDao.findExpireByNameFolid(name,fol_id);
+    }
+
     public Fil findExpireById(int fil_id){
         return filDao.findExpireById(fil_id);
     }

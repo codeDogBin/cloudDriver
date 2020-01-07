@@ -1,11 +1,7 @@
 package com.bin.dao;
 
 import com.bin.domain.Fil;
-import lombok.Setter;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -21,6 +17,9 @@ public interface FilDao {
 
     @Select("select * from fil where id = #{fil_id} and state = 0 limit 1")
     Fil findExpireById(int fil_id);
+
+    @Select("select * from fil where name =#{name} and fol_id =#{fol_id} and state = 0")
+    Fil findExpireByNameFolid(@Param("name") String name,@Param("fol_id") int fol_id);
 
     @Select("select * from fil where state = 0")
     List<Fil> allExpire();

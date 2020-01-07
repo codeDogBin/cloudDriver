@@ -67,7 +67,7 @@ public class FolderController {
      @RequestMapping("/createFolder.do")
      public String  createFolder(String name,int fway_id,int company_id){
          Folder byNameFidCid = folderService.findByNameFidCid(name, fway_id, company_id);
-         if(byNameFidCid!=null){
+         if(byNameFidCid!= null){
              return "有同名文件夹";
          }
          String fway =fway_id == 0 ?companyService.selectCompany(company_id).getWay():folderService.findByFidAsId(fway_id).getWay();
@@ -95,7 +95,7 @@ public class FolderController {
      * @param request
      * @return java.lang.String
      */
-    @RequestMapping("expireFolder.do")
+    @RequestMapping("/expireFolder.do")
      public String expireFolder(int folder_id,
                                 int fway_id,
                                 int company_id,
@@ -122,36 +122,29 @@ public class FolderController {
         findWay(folder.getFway_id(),way);
         way.add(folder);
     }
-    /*
-     * 功能描述 ergodicFolFil 遍历文件夹下所有的子文件夹和文件
-     * @Author bin
-     * @param fol_id
-     * @param company_id
-     * @param list
-     * @return void
-     */
-    public void ergodicFolFilByFolId(int fol_id,int company_id ,List list){
-        List<Folder> folderList = folderService.findByFidCid(fol_id, company_id);
-        List<Fil> filList = filService.FindByFid(fol_id);
-        if(folderList.size()!=0){
-            for (Folder folder : folderList) {
-                ergodicFolFilByFolId(folder.getId(),company_id,list);
-                list.add(folder);
-            }
-        }
-        if(filList.size() !=0){
-            for (Fil fil : filList) {
-                list.add(fil);
-            }
-        }
-    }
-    /*
-     * 功能描述 将文件夹内容设置为过期
-     * @Author bin
-     * @param list
-     * @return void
-     */
-
+//    /*
+//     * 功能描述 ergodicFolFil 遍历文件夹下所有的子文件夹和文件
+//     * @Author bin
+//     * @param fol_id
+//     * @param company_id
+//     * @param list
+//     * @return void
+//     */
+//    public void ergodicFolFilByFolId(int fol_id,int company_id ,List list){
+//        List<Folder> folderList = folderService.findByFidCid(fol_id, company_id);
+//        List<Fil> filList = filService.FindByFid(fol_id);
+//        if(folderList.size()!=0){
+//            for (Folder folder : folderList) {
+//                ergodicFolFilByFolId(folder.getId(),company_id,list);
+//                list.add(folder);
+//            }
+//        }
+//        if(filList.size() !=0){
+//            for (Fil fil : filList) {
+//                list.add(fil);
+//            }
+//        }
+//    }
 
 
 }

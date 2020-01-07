@@ -84,9 +84,9 @@ public class UserController {
      * 功能描述 注册
      * @Author bin
      * @param name
- * @param password
- * @param permission_id
- * @param request 
+    * @param password
+    * @param permission_id
+    * @param request
      * @return java.lang.String        
      */
     @RequestMapping("/register.do")

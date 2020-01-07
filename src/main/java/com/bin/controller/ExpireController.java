@@ -25,7 +25,7 @@ public class ExpireController {
      * @param request 
      * @return java.lang.String        
      */
-    @RequestMapping("toAllExpire")
+    @RequestMapping("/toAllExpire")
     public String allExpire(HttpServletRequest request){
         List<Fil> fils = filService.allExpire();
         List<Folder> folders = folderService.allExpire();
@@ -33,7 +33,7 @@ public class ExpireController {
         request.setAttribute("folders",folders);
         return "expire";
     }
-    @RequestMapping("recoverFil.do")
+    @RequestMapping("/recoverFil.do")
     public String recoverFil(int fil_id,HttpServletRequest request){
         Fil fil = filService.findById(fil_id);
         fil.setState(true);
@@ -42,7 +42,7 @@ public class ExpireController {
         request.setAttribute("msg","恢复成功");
         return "forward:toAllExpire";
     }
-    @RequestMapping("recoverFolder.do")
+    @RequestMapping("/recoverFolder.do")
     public String recoverFolder(int fol_id,HttpServletRequest request){
         Folder fol = folderService.findExpireByID(fol_id);
         fol.setState(true);

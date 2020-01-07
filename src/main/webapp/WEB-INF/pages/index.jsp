@@ -20,11 +20,13 @@ ${user.name}，欢迎登录</br>
 <a href="/toCompany">分配公司</a>
 </c:if>
 <a href="/index.do">刷新</a>
-
+<a href="/index.jsp">去登录页</a>
+<c:if test="${permission.readall}">
 <form action="/createCompany.do" method="post">
 <input type="text" name="name">
 <input type="submit" value="新建公司">
 </form>
+</c:if>
 <div>
 公司列表<br>
 <c:forEach  items="${companies}" var="company">

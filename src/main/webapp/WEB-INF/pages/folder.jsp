@@ -51,7 +51,7 @@ ${user.name}，欢迎登录
 
     <button class="levelOne" onclick="createFolder()" >新建文件夹</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    <form method="post" action="/uploadFile" enctype="multipart/form-data">
+    <form method="post" action="/uploadFile.do" enctype="multipart/form-data">
             <input type="hidden" id="company_id"name="company_id"  value="${company_id}" >
             <input type="hidden" id="fway_id"name="fway_id" value="${fway_id}"  >
     <c:if test="${fway_id > 0}">
@@ -82,9 +82,9 @@ ${user.name}，欢迎登录
 <c:if test="${fway_id > 0}">
     <br>文件区<br>
 <c:forEach  items="${fils}" var="fil">
-    <a href="/getFile.do?way=${fil.way}&name=${fil.name}">${fil.name}</a>
+    <a href="/getFile.do?id=${fil.id}&name=${fil.name}">${fil.name}</a>
     <c:if test="${permission.del}">
-        <a href="/expireFile.do?fil_id=${fil.id}&company_id=${company_id}&fway_id=${fway_id}">删除</a>
+        <a href="/expireFile.do?fil_id=${fil.id}&name=${fil.name}&company_id=${company_id}&fway_id=${fway_id}">删除</a>
     </c:if> <br>
 </c:forEach>
 </c:if>

@@ -36,7 +36,7 @@ public class FilController {
      * @param request
      * @return java.lang.String
      */
-    @RequestMapping("/uploadFile")
+    @RequestMapping("/uploadFile.do")
     public String uploadFile(List<MultipartFile>  multipartFiles,
                              String company_id,
                              String fway_id,
@@ -90,8 +90,9 @@ public class FilController {
      * @return void
      */
     @RequestMapping("/getFile.do")
-    public void getFile(String way, String name, HttpServletResponse response) throws Exception { ;
-        File file = new File(way);
+    public void getFile(int id, String name, HttpServletResponse response) throws Exception { ;
+        Fil fil = filService.findById(id);
+        File file = new File(fil.getWay());
         name = URLEncoder.encode(name, "UTF-8");
         //设置响应的contentType开启下载模式
         response.setContentType("application/x-msdownload");
@@ -115,12 +116,15 @@ public class FilController {
     public String expireFil(int fil_id,
                             String company_id,
                             String fway_id,
+                            String name,
                             HttpServletRequest request){
-
+        Fil fil = filService.findById(fil_id);
         try {
-            Fil fil = filService.findExpireById(fil_id);
+            Fil expirefil = filService.findExpireByNameFolid(name,Integer.parseInt(fway_id));
+            if(expirefil != null){
+                fil = filService.chongMing(fil);
+            }
             fil.setState(false);
-            fil = filService.chongMing(fil);
             filService.expireFil(fil);
             request.setAttribute("msg","删除成功");
         } catch (Exception e) {
