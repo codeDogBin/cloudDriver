@@ -34,4 +34,8 @@ public class User_Company_Service {
     public void delUserCompany(User_Company user_company){
         user_company_dao.delete(user_company);
     }
+
+    public Integer getCompanyCountByUserID(int user_id){
+        return user_company_dao.getCompanyCountByUserID(user_id);
+    }
 }

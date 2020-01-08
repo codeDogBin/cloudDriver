@@ -11,9 +11,9 @@ import com.bin.service.User_Company_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,14 +27,11 @@ public class UserController {
     @Autowired
     private PermissionService permissionService;
 
-    @RequestMapping("/toIndex")
-    public String toIndex(){
-        return "index";
-    }
     @RequestMapping("/toLogin")
     public String toLogin(){
         return "login";
     }
+
     @RequestMapping("/toRegister")
     public  String toRegister(){
         return "register";
@@ -60,7 +57,7 @@ public class UserController {
         return "forward:index.do";
     }
     /*
-     * 功能描述 前往主页 并且将公司信息存入session
+     * 功能描述 前往主页 并且将公司信息存入requester
      * @Author bin
      * @param request 
      * @return java.lang.String        
@@ -69,14 +66,34 @@ public class UserController {
     public String index(HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         Permission permission = (Permission)request.getSession().getAttribute("permission");
-        List<Company> companies= new ArrayList();
+        List<Company> companies;
+        int sumPages ;
         if(permission.isReadall()){//如果当前权限是读取所有公司的权限
-            companies = companyService.selectAll();
+            companies = companyService.selectAll(0,20);
+            Integer allCompanyCount = companyService.getAllCompanyCount();
+            sumPages = (allCompanyCount+19)/20;
         }else{
-            companies  = companyService.findCompanyByUserID(user.getId());
+            companies  = companyService.findCompanyByUserIDLimit(user.getId(),0);
+            Integer companyCountByUserID = user_company_service.getCompanyCountByUserID(user.getId());
+            sumPages = (companyCountByUserID+19)/20;
         }
-        request.getSession().setAttribute("companies",companies);
+        request.setAttribute("sumPages",sumPages);
+        request.setAttribute("companies",companies);
         return "index";
+    }
+    @ResponseBody
+    @RequestMapping("/indexAJAX.do")
+    public List indexAJAX(int start,HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        Permission permission = (Permission)request.getSession().getAttribute("permission");
+        List<Company> companies;
+        if(permission.isReadall()){//如果当前权限是读取所有公司的权限
+            companies = companyService.selectAll(start,20);
+        }else{
+            companies  = companyService.findCompanyByUserIDLimit(user.getId(),start);
+        }
+        System.out.println(companies);
+        return companies;
     }
 
    

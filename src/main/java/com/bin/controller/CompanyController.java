@@ -35,9 +35,7 @@ public class CompanyController {
      */
     @RequestMapping("/toCompany")
     public String toCompany(HttpServletRequest request){
-        List<Company> companies = companyService.selectAll();
         List<User> users = userService.findAllCus();
-        request.setAttribute("companies",companies);
         request.setAttribute("users",users);
         return "company";
     }
@@ -51,6 +49,10 @@ public class CompanyController {
      */
     @RequestMapping("/createCompany.do")
     public String createCompany(String name, HttpServletRequest request) throws Exception {
+        if(name==null||"".equals(name)){
+            request.setAttribute("msg","公司名不能为空");
+            return "forward:index.do";
+        }
         Company company = new Company();
         try {
             company.setName(name);
@@ -60,13 +62,14 @@ public class CompanyController {
             companyService.registerCompany(company);
             request.setAttribute("msg","创建成功");
         } catch (Exception e) {
+            request.setAttribute("msg","创建失败，检查是否有相同名称的公司");
             e.printStackTrace();
         }
         return "forward:index.do";
     }
 
     /*
-     * 功能描述 查询用户绑定和未绑定的id
+     * 功能描述 查询用户绑定的公司
      * @Author bin
      * @param user_id
      * @return java.util.List
@@ -75,11 +78,8 @@ public class CompanyController {
     @RequestMapping("/findUserCompanyAJAX.do")
     public List findUserCompany(int user_id){
         List<Company> userCompanies = companyService.findCompanyByUserID(user_id);
-        List<Company> allCompanies = companyService.selectAll();
-        allCompanies.removeAll(userCompanies);
         List list = new ArrayList();
         list.add(userCompanies);
-//        list.add(allCompanies);
         return list;
     }
 
@@ -145,7 +145,4 @@ public class CompanyController {
         companies.removeAll(companyByUserID);
         return companies;
     }
-
-
-
 }

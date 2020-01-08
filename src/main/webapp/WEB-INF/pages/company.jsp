@@ -10,6 +10,7 @@
 <html>
 <head>
 <title>用户绑定公司</title>
+
     <script type="text/javascript" src="js/jquery.js"></script>
     <script>
         var user_id = -1;
@@ -151,4 +152,5 @@
 
 
 </body>
+
 </html>

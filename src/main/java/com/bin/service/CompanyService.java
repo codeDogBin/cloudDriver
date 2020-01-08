@@ -36,17 +36,21 @@ public class CompanyService {
      * @param user_id 
      * @return java.util.List<com.bin.domain.Company>        
      */
+    public List<Company> findCompanyByUserIDLimit(int user_id,int start){
+        return  companyDao.findCompanyByUserIDLimit(user_id, start);
+    }
     public List<Company> findCompanyByUserID(int user_id){
         return  companyDao.findCompanyByUserID(user_id);
     }
+
     /*
      * 功能描述 查询所有公司
      * @Author bin
      * @param  
      * @return java.util.List<com.bin.domain.Company>        
      */
-    public List<Company> selectAll(){
-        return companyDao.selectAll();
+    public List<Company> selectAll(int start,int pageSize){
+        return companyDao.selectAll(start,pageSize);
     }
     /*
      * 功能描述 通过公司名称查找公司
@@ -57,6 +61,9 @@ public class CompanyService {
     public List<Company> SelectByName(String companyName){
         companyName="%"+companyName+"%";
         return companyDao.selectByName(companyName);
+    }
+    public Integer getAllCompanyCount(){
+        return companyDao.getAllCompanyCount();
     }
 
 }

@@ -15,4 +15,7 @@ public interface User_Company_Dao {
 
     @Delete("delete from user_company where user_id = #{user_id} and company_id = #{company_id}")
     void delete(User_Company user_company);
+
+    @Select("select count(company_id) from user_company where user_id = #{user_id}")
+    Integer getCompanyCountByUserID(int user_id);
 }

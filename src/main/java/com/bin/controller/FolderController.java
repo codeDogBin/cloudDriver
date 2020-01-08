@@ -67,7 +67,7 @@ public class FolderController {
      @RequestMapping("/createFolder.do")
      public String  createFolder(String name,int fway_id,int company_id){
          Folder byNameFidCid = folderService.findByNameFidCid(name, fway_id, company_id);
-         if(byNameFidCid!= null){
+         if(byNameFidCid != null){
              return "有同名文件夹";
          }
          String fway =fway_id == 0 ?companyService.selectCompany(company_id).getWay():folderService.findByFidAsId(fway_id).getWay();

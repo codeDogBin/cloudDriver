@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>注册页</title>
+
 </head>
 <body>
 <form action="/register.do" method="post">
