@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class UserController {
         }else{
             companies  = companyService.findCompanyByUserIDLimit(user.getId(),start);
         }
-        System.out.println(companies);
+//        System.out.println(companies);
         return companies;
     }
 
@@ -122,5 +123,11 @@ public class UserController {
         }
         request.setAttribute("msg","注册失败");
         return "register";
+    }
+    @ResponseBody
+    @RequestMapping("findUserByNameAJAX.do")
+    public List findUserByNameAJAX(String userName){
+        System.out.println(userName);
+        return userService.findByName(userName);
     }
 }

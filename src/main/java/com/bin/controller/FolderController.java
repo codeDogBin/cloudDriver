@@ -66,13 +66,14 @@ public class FolderController {
      @ResponseBody
      @RequestMapping("/createFolder.do")
      public String  createFolder(String name,int fway_id,int company_id){
+         //查询当前文件夹下是否有同名文件夹
          Folder byNameFidCid = folderService.findByNameFidCid(name, fway_id, company_id);
          if(byNameFidCid != null){
              return "有同名文件夹";
          }
          String fway =fway_id == 0 ?companyService.selectCompany(company_id).getWay():folderService.findByFidAsId(fway_id).getWay();
          try {
-             fway = CreateFolderUtil.createFloder(fway);
+             fway = CreateFolderUtil.createFolder(fway);
              Folder folder = new Folder();
              folder.setName(name);
              folder.setFway_id(fway_id);

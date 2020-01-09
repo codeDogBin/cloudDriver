@@ -1,12 +1,15 @@
 package com.bin.controller;
 
 import com.bin.domain.Company;
+import com.bin.domain.Folder;
 import com.bin.domain.User;
 import com.bin.domain.User_Company;
 import com.bin.service.CompanyService;
+import com.bin.service.FolderService;
 import com.bin.service.UserService;
 import com.bin.service.User_Company_Service;
 import com.bin.util.CreateCompanyFolderUtil;
+import com.bin.util.CreateFolderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +28,9 @@ public class CompanyController {
     private CompanyService companyService;
     @Autowired
     private User_Company_Service user_company_service;
-
-
+    @Autowired
+    private FolderService folderService;
+    private String[] folderName = new String[]{"证照","文档","财报"};
     /*
      * 功能描述 前往公司页面
      * @Author bin
@@ -35,7 +39,9 @@ public class CompanyController {
      */
     @RequestMapping("/toCompany")
     public String toCompany(HttpServletRequest request){
+        //查询所有用户
         List<User> users = userService.findAllCus();
+        //将用户存入
         request.setAttribute("users",users);
         return "company";
     }
@@ -49,18 +55,34 @@ public class CompanyController {
      */
     @RequestMapping("/createCompany.do")
     public String createCompany(String name, HttpServletRequest request) throws Exception {
+        //判断name是否为空
         if(name==null||"".equals(name)){
             request.setAttribute("msg","公司名不能为空");
             return "forward:index.do";
         }
+        //创建新公司对象
         Company company = new Company();
         try {
+            //创建公司
             company.setName(name);
             String way = CreateCompanyFolderUtil.createFloder();
             company.setWay(way);
             company.setCtime(new Timestamp(System.currentTimeMillis()));
+            //数据库新增
             companyService.registerCompany(company);
+            //创建文件夹 证照和文件
+            for (int i = 0; i < folderName.length; i++) {
+                String folderWay = CreateFolderUtil.createFolder(way);
+                Folder folder = new Folder();
+                folder.setCompany_id(company.getId());
+                folder.setName(folderName[i]);
+                folder.setFway_id(0);
+                folder.setWay(folderWay);
+                folder.setCtime(new Timestamp(System.currentTimeMillis()));
+                folderService.insertFolder(folder);
+            }
             request.setAttribute("msg","创建成功");
+
         } catch (Exception e) {
             request.setAttribute("msg","创建失败，检查是否有相同名称的公司");
             e.printStackTrace();
@@ -107,7 +129,7 @@ public class CompanyController {
         return "添加成功";
     }
     /*
-     * 功能描述 unbindUserCompany
+     * 功能描述 unbindUserCompany 解绑用户和公司
      * @Author bin
      * @param user_id
      * @param companies_id
@@ -116,7 +138,6 @@ public class CompanyController {
     @ResponseBody
     @RequestMapping("/unbindUserCompanyAJAX.do")
     public String unbindUserCompany(@RequestParam("user_id") int user_id, @RequestParam("companies_id") int[] companies_id){
-        System.out.println(Arrays.toString(companies_id));
         try {
             for (int i = 0; i < companies_id.length; i++) {
                 User_Company user_company= new User_Company();

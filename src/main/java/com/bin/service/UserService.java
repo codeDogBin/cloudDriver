@@ -67,4 +67,8 @@ public class UserService {
     }
 
 
+    public List<User> findByName(String userName) {
+        userName = "%"+userName+"%";
+        return dao.findByName(userName);
+    }
 }

@@ -18,7 +18,8 @@ public class CompanyService {
      * @return boolean
      */
     public boolean registerCompany(Company company){
-        Integer x = companyDao.insertCompany(company);
+        int x = companyDao.insertCompany(company);
+        System.out.println(x);
         return  x==1?true:false;
     }
     /*
