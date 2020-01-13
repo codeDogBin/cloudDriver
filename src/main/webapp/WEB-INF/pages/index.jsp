@@ -39,8 +39,8 @@
         </div>
     </div>
     <div id="company_list">
-<c:forEach  items="${companies}" var="company">
-    <a href="toFolder.do?company_id=${company.id}&fway_id=0">${company.name}</a><br>
+<c:forEach  items="${companies}" var="company" varStatus="id">
+    ${id.index+1}.<a href="toFolder.do?company_id=${company.id}&fway_id=0">${company.name}</a><br>
 </c:forEach>
     </div>
 </div>
@@ -65,6 +65,7 @@
                             var a =$("<a>");
                             a.attr("href","toFolder.do?company_id="+datas[i].id+"&fway_id=0");
                             a.html(datas[i].name);
+                            company_list.append((i+1)+".");
                             company_list.append(a);
                             company_list.append($("<br>"));
                         }

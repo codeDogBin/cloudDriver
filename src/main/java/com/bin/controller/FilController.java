@@ -125,6 +125,7 @@ public class FilController {
                 fil = filService.chongMing(fil);
             }
             fil.setState(false);
+            fil.setDel_time(new Timestamp(System.currentTimeMillis()));
             filService.expireFil(fil);
             request.setAttribute("msg","删除成功");
         } catch (Exception e) {

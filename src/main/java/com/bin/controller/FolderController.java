@@ -103,6 +103,7 @@ public class FolderController {
                                 HttpServletRequest request){
          Folder folder = folderService.findByFidAsId(folder_id);
          folder.setState(false);
+         folder.setDel_time(new Timestamp(System.currentTimeMillis()));
          folder = folderService.chongMing(folder);
          folderService.expireFol(folder);
          request.setAttribute("msg","删除成功");

@@ -1,8 +1,10 @@
 package com.bin.dao;
 
 import com.bin.domain.Fil;
+import com.bin.domain.Folder;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface FilDao {
@@ -24,7 +26,7 @@ public interface FilDao {
     @Select("select * from fil where state = 0")
     List<Fil> allExpire();
 
-    @Update("update fil set state = 0 ,name= #{name} where id = #{id}")
+    @Update("update fil set state = 0 ,name= #{name}, del_time= #{del_time} where id = #{id}")
     void expireFileById(Fil fil);
 
     @Delete("delete from fil where id = #{fil_id}")
@@ -32,6 +34,9 @@ public interface FilDao {
 
     @Select("select * from fil where name= #{name} and fol_id = #{fol_id} and state = #{state} limit 1")
     Fil findByNameFidState(Fil fil);
+
+    @Select("select * from fil where state = 0 and del_time < #{timestamp}")
+    List<Fil> getExpireFil(Timestamp timestamp);
 
     @Update("update fil set state = 1 ,name= #{name} where id = #{id}")
     void recoverFil(Fil fil);

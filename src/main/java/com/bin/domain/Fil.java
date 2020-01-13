@@ -16,5 +16,5 @@ public class Fil implements Serializable {
     private Integer fol_id;
     private Timestamp ctime;
     private boolean state;
-
+    private Timestamp del_time;
 }

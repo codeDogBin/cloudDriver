@@ -17,4 +17,5 @@ public class Folder implements Serializable {
     private Timestamp ctime;
     private Integer company_id;
     private boolean state;
+    private Timestamp del_time;
 }

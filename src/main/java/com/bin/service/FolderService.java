@@ -1,17 +1,23 @@
 package com.bin.service;
 
+import com.bin.dao.FilDao;
 import com.bin.dao.FolderDao;
+
 import com.bin.domain.Fil;
 import com.bin.domain.Folder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service("folderService")
 public class FolderService {
     @Autowired
     private FolderDao folderDao;
+    @Autowired
+    private FilDao filDao;
     /*
      * 功能描述 新增文件夹
      * @Author bin
@@ -41,8 +47,18 @@ public class FolderService {
     public Folder findByFidAsId(int fway_id){
         return folderDao.findByFidAsId(fway_id);
     }
-
+    @Transactional
     public void delFolByID(int id){
+        //找到所有的子文件夹
+        List<Folder> folders = folderDao.findByFid(id);
+        //继续遍历子文件夹
+        for (Folder folder : folders) {
+            delFolByID(folder.getId());
+        }
+        List<Fil> fils = filDao.findByFid(id);
+        for (Fil fil : fils) {
+            filDao.delFilById(fil.getId());
+        }
         folderDao.delFolById(id);
     }
     /*
@@ -73,6 +89,12 @@ public class FolderService {
         return folderDao.findExpireByID(id);
     }
 
+    public List<Folder> getExpireFol(Timestamp timestamp){
+        return folderDao.getExpireFol(timestamp);
+    }
+    public void delFolder(){
+
+    }
 
     public void expireFol(Folder folder) {
         folderDao.expireFol(folder);

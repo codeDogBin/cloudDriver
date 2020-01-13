@@ -47,6 +47,20 @@
      <servlet-name>default</servlet-name>
      <url-pattern>*.html</url-pattern>
    </servlet-mapping>
+    <!--log4j配置-->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value> classpath:log4j.properties</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>log4jRefreshInterval</param-name>
+        <param-value>3000</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
 
     <!--错误跳转页面-->
     <!--<error-page>-->

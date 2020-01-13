@@ -2,9 +2,11 @@ package com.bin.service;
 
 import com.bin.dao.FilDao;
 import com.bin.domain.Fil;
+import com.bin.domain.Folder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service("filService")
@@ -85,6 +87,10 @@ public class FilService {
 
     public Fil findExpireByNameFolid(String name,int fol_id){
         return filDao.findExpireByNameFolid(name,fol_id);
+    }
+
+    public List<Fil> getExpireFil(Timestamp timestamp){
+        return filDao.getExpireFil(timestamp);
     }
 
     public Fil findExpireById(int fil_id){
