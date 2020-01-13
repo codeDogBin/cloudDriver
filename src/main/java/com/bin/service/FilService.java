@@ -96,4 +96,8 @@ public class FilService {
     public Fil findExpireById(int fil_id){
         return filDao.findExpireById(fil_id);
     }
+
+    public List<Fil> getFilByMonth(Timestamp timestamp){
+        return  filDao.getFilByMonth(timestamp);
+    }
 }

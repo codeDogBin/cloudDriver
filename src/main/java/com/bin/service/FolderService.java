@@ -1,16 +1,21 @@
 package com.bin.service;
 
+import com.bin.dao.CompanyDao;
 import com.bin.dao.FilDao;
 import com.bin.dao.FolderDao;
 
+import com.bin.domain.Company;
 import com.bin.domain.Fil;
 import com.bin.domain.Folder;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @Service("folderService")
 public class FolderService {
@@ -18,6 +23,8 @@ public class FolderService {
     private FolderDao folderDao;
     @Autowired
     private FilDao filDao;
+    @Autowired
+    private CompanyDao companyDao;
     /*
      * 功能描述 新增文件夹
      * @Author bin
@@ -71,6 +78,9 @@ public class FolderService {
        return folderDao.allExpire();
     }
 
+    public List<Folder> allFolder(){
+        return folderDao.allFolder();
+    }
     public Folder chongMing(Folder folder) {
         Folder temp;
         temp = folderDao.findByNameFidCidState(folder);
@@ -92,9 +102,7 @@ public class FolderService {
     public List<Folder> getExpireFol(Timestamp timestamp){
         return folderDao.getExpireFol(timestamp);
     }
-    public void delFolder(){
 
-    }
 
     public void expireFol(Folder folder) {
         folderDao.expireFol(folder);
@@ -102,5 +110,36 @@ public class FolderService {
 
     public void recoverFol(Folder fol) {
         folderDao.recoverFol(fol);
+    }
+
+    public void allContent(Map<Integer,String> wayMap){
+        List<Folder> folders = folderDao.allFolder();
+        for (Folder folder: folders){
+            StringBuilder way = new StringBuilder();
+            contents(folder,wayMap,way);
+        }
+    }
+    private  void contents(Folder folder,Map<Integer,String> wayMap,StringBuilder way){
+        //判断父级是不是公司
+        int fway_id=folder.getFway_id();
+        if(fway_id==0){
+            Company company = companyDao.findCompanyById(folder.getCompany_id());
+            way.append(company.getName()).append(File.separator).append(folder.getName()).append(File.separator);
+            System.out.println(folder.getId()+"---"+way);
+            wayMap.put(folder.getId(),way.toString());
+            return ;
+        }else{//如果不是公司 尝试去数据库中查找地址
+            String s = wayMap.get(fway_id);
+            //判断地址是否为空 如果为空，继续递归
+            if ("".equals(s)||s==null){
+                Folder tempFolder = folderDao.findByFidAsId(fway_id);
+                contents(tempFolder, wayMap, way);
+                way.append(folder.getName()).append(File.separator);
+            }
+            //如果不为空，将父级地址拼接上本级地址
+            else way= new StringBuilder(s).append(folder.getName()).append(File.separator);
+        }
+        System.out.println(folder.getId()+"---"+way);
+        wayMap.put(folder.getId(),way.toString());
     }
 }

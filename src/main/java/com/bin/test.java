@@ -1,19 +1,26 @@
 package com.bin;
 
 
+import com.bin.controller.DownZipController;
 import com.bin.service.CompanyService;
 import com.bin.service.FolderService;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.File;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class test {
     private static ApplicationContext apc;
     static{ apc = new ClassPathXmlApplicationContext("applicationContext.xml");}
     public static void main(String[] args) {
-        CompanyService cs = apc.getBean("companyService",CompanyService.class);
+        CompanyService companyService = apc.getBean("companyService",CompanyService.class);
         FolderService folderService =apc.getBean("folderService",FolderService.class);
+
 //        Company company = new Company();
 //        company.setName("彬彬");
 //        company.setWay("123123");
@@ -30,5 +37,8 @@ public class test {
 //        System.out.println(folders1);
 //        Test test = new Test();
 //        test.deleteFolder(new File("C:\\Users\\lb\\Desktop\\1"));
+
+        HashMap<Integer, String> Map = new HashMap<>();
+        folderService.allContent(Map);
     }
 }

@@ -31,6 +31,9 @@ public interface FolderDao {
     @Select("select * from folder where state = 0")
     List<Folder> allExpire();
 
+    @Select("select * from folder where state = 1")
+    List<Folder> allFolder();
+
     @Select("select * from folder where name=#{name} and fway_id = #{fway_id} and company_id = #{company_id} and state = #{state} limit 1")
     Folder findByNameFidCidState(Folder folder);
 
@@ -42,4 +45,6 @@ public interface FolderDao {
 
     @Select("select * from folder where state = 0 and del_time < #{timestamp}")
     List<Folder> getExpireFol(Timestamp timestamp);
+
+
 }
