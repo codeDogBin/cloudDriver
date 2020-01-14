@@ -5,6 +5,7 @@ import com.bin.domain.Folder;
 import com.bin.service.FilService;
 
 import com.bin.service.FolderService;
+import com.bin.util.TimeUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,8 @@ public class FilController {
     private FilService filService;
     @Autowired
     private FolderService folderService;
+    @Autowired
+    private AutoController autoController;
     /*
      * 功能描述 上传文件
      * @Author bin
@@ -132,5 +136,27 @@ public class FilController {
             e.printStackTrace();
         }
         return "forward:toFolder.do?company_id="+company_id+"&fway_id="+fway_id;
+    }
+    @RequestMapping("/downZip.do")
+    public void downZip(HttpServletResponse res) throws IOException {
+        String[] lastTime = TimeUtil.getLastMonth();
+        String zipName = lastTime[0]+"新增客户文件.zip";
+        String zipFilePath = "D:/couldriver"+File.separator+lastTime[1]+File.separator+lastTime[2]+File.separator+zipName;
+        System.out.println(zipFilePath);
+        File file = new File(zipFilePath);
+        if(!file.exists()){
+            autoController.autoZip();
+        }
+        //IO流实现下载的功能
+        res.setContentType("text/html; charset=UTF-8"); //设置编码字符
+        res.setContentType("application/octet-stream"); //设置内容类型为下载类型
+        OutputStream out = res.getOutputStream(); //创建页面返回方式为输出流，会自动弹出下载框
+        res.setHeader("Content-disposition", "attachment;filename="+new String(zipName.getBytes("utf-8"),"ISO-8859-1"));//设置下载的压缩文件名称
+        //将打包后的文件写到客户端，输出的方法同上，使用缓冲流输出
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(zipFilePath));
+        IOUtils.copy(bis, out);//拷贝
+        bis.close();//关闭输入流
+        out.flush();//释放缓存
+        out.close();//关闭输出流
     }
 }

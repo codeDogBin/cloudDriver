@@ -124,29 +124,7 @@ public class FolderController {
         findWay(folder.getFway_id(),way);
         way.add(folder);
     }
-//    /*
-//     * 功能描述 ergodicFolFil 遍历文件夹下所有的子文件夹和文件
-//     * @Author bin
-//     * @param fol_id
-//     * @param company_id
-//     * @param list
-//     * @return void
-//     */
-//    public void ergodicFolFilByFolId(int fol_id,int company_id ,List list){
-//        List<Folder> folderList = folderService.findByFidCid(fol_id, company_id);
-//        List<Fil> filList = filService.FindByFid(fol_id);
-//        if(folderList.size()!=0){
-//            for (Folder folder : folderList) {
-//                ergodicFolFilByFolId(folder.getId(),company_id,list);
-//                list.add(folder);
-//            }
-//        }
-//        if(filList.size() !=0){
-//            for (Fil fil : filList) {
-//                list.add(fil);
-//            }
-//        }
-//    }
+
 
 
 }

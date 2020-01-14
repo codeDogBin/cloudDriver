@@ -41,7 +41,7 @@ public interface FilDao {
     @Update("update fil set state = 1 ,name= #{name} where id = #{id}")
     void recoverFil(Fil fil);
 
-    @Select("select * from fil where state = 1 and ctime > #{ctime} ")
-    List<Fil> getFilByMonth(Timestamp ctime);
+    @Select("select * from fil where state = 1 and ctime between #{startTime} and #{endTime} ")
+    List<Fil> getFilByMonth(@Param("startTime") Timestamp startTime,@Param("endTime") Timestamp endTime);
 
 }

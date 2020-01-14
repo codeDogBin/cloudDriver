@@ -2,7 +2,6 @@ package com.bin.service;
 
 import com.bin.dao.FilDao;
 import com.bin.domain.Fil;
-import com.bin.domain.Folder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +96,7 @@ public class FilService {
         return filDao.findExpireById(fil_id);
     }
 
-    public List<Fil> getFilByMonth(Timestamp timestamp){
-        return  filDao.getFilByMonth(timestamp);
+    public List<Fil> getFilByMonth(Timestamp startTime,Timestamp endTime){
+        return  filDao.getFilByMonth(startTime,endTime);
     }
 }

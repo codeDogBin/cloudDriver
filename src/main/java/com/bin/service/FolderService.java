@@ -7,7 +7,6 @@ import com.bin.dao.FolderDao;
 import com.bin.domain.Company;
 import com.bin.domain.Fil;
 import com.bin.domain.Folder;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,12 +121,11 @@ public class FolderService {
     private  void contents(Folder folder,Map<Integer,String> wayMap,StringBuilder way){
         //判断父级是不是公司
         int fway_id=folder.getFway_id();
+        //递归阶段
         if(fway_id==0){
             Company company = companyDao.findCompanyById(folder.getCompany_id());
             way.append(company.getName()).append(File.separator).append(folder.getName()).append(File.separator);
-            System.out.println(folder.getId()+"---"+way);
             wayMap.put(folder.getId(),way.toString());
-            return ;
         }else{//如果不是公司 尝试去数据库中查找地址
             String s = wayMap.get(fway_id);
             //判断地址是否为空 如果为空，继续递归
@@ -139,7 +137,6 @@ public class FolderService {
             //如果不为空，将父级地址拼接上本级地址
             else way= new StringBuilder(s).append(folder.getName()).append(File.separator);
         }
-        System.out.println(folder.getId()+"---"+way);
         wayMap.put(folder.getId(),way.toString());
     }
 }
