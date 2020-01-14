@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.*;
@@ -165,5 +164,14 @@ public class CompanyController {
         List<Company> companyByUserID = companyService.findCompanyByUserID(user_id);
         companies.removeAll(companyByUserID);
         return companies;
+    }
+
+    @RequestMapping("")
+    public boolean companyName(String name){
+        Company c = companyService.findByName(name);
+        if(c==null){
+            return true;
+        }
+        return false;
     }
 }

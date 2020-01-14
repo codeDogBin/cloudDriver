@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.UUID;
 
 public class CreateCompanyFolderUtil {
+    //创建公司的文件夹的工具类
     private final static String rootPath ="D:\\couldriver";
     public static String createFloder() throws Exception {
         File file = createFile();

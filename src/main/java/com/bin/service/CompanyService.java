@@ -4,7 +4,6 @@ import com.bin.dao.CompanyDao;
 import com.bin.domain.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service("companyService")
@@ -76,4 +75,7 @@ public class CompanyService {
         return companyDao.getAllCompanyCount();
     }
 
+    public Company findByName(String name){
+        return companyDao.findCompanyByName(name);
+    }
 }

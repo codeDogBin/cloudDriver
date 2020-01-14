@@ -1,9 +1,7 @@
 package com.bin.dao;
 
 import com.bin.domain.Fil;
-import com.bin.domain.Folder;
 import org.apache.ibatis.annotations.*;
-
 import java.sql.Timestamp;
 import java.util.List;
 

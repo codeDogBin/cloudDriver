@@ -3,14 +3,12 @@ package com.bin.service;
 import com.bin.dao.CompanyDao;
 import com.bin.dao.FilDao;
 import com.bin.dao.FolderDao;
-
 import com.bin.domain.Company;
 import com.bin.domain.Fil;
 import com.bin.domain.Folder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;

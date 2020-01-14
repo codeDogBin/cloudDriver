@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" href="css/all.css"/>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/bootstrap-paginator.js"></script>
+    <script>
+    </script>
 </head>
 <body>
 <span style="color: red">${msg}</span><br>

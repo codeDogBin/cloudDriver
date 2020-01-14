@@ -1,6 +1,5 @@
 package com.bin.controller;
 
-import com.bin.dao.FolderDao;
 import com.bin.domain.Fil;
 import com.bin.domain.Folder;
 import com.bin.service.FilService;

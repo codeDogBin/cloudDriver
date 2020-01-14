@@ -3,7 +3,6 @@ package com.bin.controller;
 import com.bin.domain.Company;
 import com.bin.domain.Permission;
 import com.bin.domain.User;
-import com.bin.domain.User_Company;
 import com.bin.service.CompanyService;
 import com.bin.service.PermissionService;
 import com.bin.service.UserService;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 

@@ -3,7 +3,6 @@ package com.bin.dao;
 
 import com.bin.domain.User_Company;
 import org.apache.ibatis.annotations.*;
-
 import java.util.List;
 
 public interface User_Company_Dao {

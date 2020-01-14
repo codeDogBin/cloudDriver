@@ -4,7 +4,6 @@ import com.bin.dao.User_Company_Dao;
 import com.bin.domain.User_Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service("user_company_service")

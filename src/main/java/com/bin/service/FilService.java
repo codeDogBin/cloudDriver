@@ -4,7 +4,6 @@ import com.bin.dao.FilDao;
 import com.bin.domain.Fil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
 import java.util.List;
 

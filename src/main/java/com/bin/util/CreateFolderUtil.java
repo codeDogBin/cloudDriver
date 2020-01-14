@@ -2,7 +2,7 @@ package com.bin.util;
 
 import java.io.File;
 import java.util.UUID;
-
+//创建文件夹工具类
 public class CreateFolderUtil {
         //创建一个的文件夹
         public static String createFolder(String path) throws Exception {

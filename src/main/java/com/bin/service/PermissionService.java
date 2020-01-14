@@ -1,7 +1,6 @@
 package com.bin.service;
 
 import com.bin.dao.PermissionDao;
-import com.bin.domain.Folder;
 import com.bin.domain.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

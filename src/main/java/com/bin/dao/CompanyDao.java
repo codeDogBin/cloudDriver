@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
 import java.util.List;
 
 public interface CompanyDao {
@@ -36,4 +35,7 @@ public interface CompanyDao {
 
     @Select("select * from company where name like #{name}")
     List<Company> selectByNameNoPage(String companyName);
+
+    @Select("select * from company where name = name")
+    Company findCompanyByName(String name);
 }
