@@ -1,8 +1,5 @@
 package com.bin.controller;
-
-import com.bin.domain.Company;
 import com.bin.domain.Fil;
-import com.bin.domain.Folder;
 import com.bin.service.CompanyService;
 import com.bin.service.FilService;
 import com.bin.service.FolderService;
@@ -11,14 +8,12 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipOutputStream;
-
 
 @Controller
 public class DownZipController {
@@ -30,9 +25,11 @@ public class DownZipController {
     private CompanyService companyService;
     @RequestMapping("/downZip")
     public void downZip(HttpServletResponse res) throws IOException {
+        //设置时间戳
         Timestamp timestamp = new Timestamp(System.currentTimeMillis()-30*24*3600*1000l);
         //找到最近一个月内的所有文件
         List<Fil> fils = filService.getFilByMonth(timestamp);
+        //
         Map<Integer,String> wayMap=new HashMap();
         folderService.allContent(wayMap);
         //将所有文件的名字和文件存好

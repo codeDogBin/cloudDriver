@@ -161,7 +161,7 @@ public class CompanyController {
     @ResponseBody
     @RequestMapping("findCompanyByNameAJAX.do")
     public List<Company> findCompanyByName(String name, int user_id){
-        List<Company> companies = companyService.SelectByName(name);
+        List<Company> companies = companyService.SelectByNameNoPage(name);
         List<Company> companyByUserID = companyService.findCompanyByUserID(user_id);
         companies.removeAll(companyByUserID);
         return companies;

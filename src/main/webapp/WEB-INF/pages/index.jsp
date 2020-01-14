@@ -19,6 +19,7 @@
 <body>
 <span style="color: red">${msg}</span><br>
 <input type="hidden" id="sumPages" value="${sumPages}">
+<input type="hidden" id="name" value="${name}">
 <span>${user.name}，欢迎登录</br></span>
 <c:if test="${permission.readall}">
 <a href="/toAllExpire ">过期文件</a>
@@ -31,7 +32,13 @@
 <input type="text" name="name">
 <input type="submit" value="新建公司">
 </form>
+    <br>
+<form action="selectCompanyByNameIndex.do" method="post">
+    <input type="text" name="name">
+    <input type="submit" value="查询公司">
+</form>
 </c:if>
+
 <div>
 公司列表<br>
     <div>
@@ -48,6 +55,8 @@
 <script type="text/javascript">
     $(function(){
         var sumPages = $("#sumPages").val();
+        var name = $("#name").val();
+        console.log(name);
         var company_list =  $("#company_list");
         var options={
             bootstrapMajorVersion:1,
@@ -55,7 +64,6 @@
             numberOfPages:sumPages>5? 5:sumPages,  //显示页数
             totalPages:sumPages,   //显示总数
             onPageClicked:function(e,originalEvent,type,page){
-
                 $.ajax({
                     url:"indexAJAX.do",
                     type:"post",
@@ -70,7 +78,7 @@
                             company_list.append($("<br>"));
                         }
                     },
-                    data:{start:(page-1)*20},
+                    data:{start:(page-1)*20,name:name},
                 })
             }
         }

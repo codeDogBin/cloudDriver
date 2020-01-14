@@ -82,14 +82,30 @@ public class UserController {
         request.setAttribute("companies",companies);
         return "index";
     }
+    @RequestMapping("/selectCompanyByNameIndex.do")
+    public String selectIndex(String name,HttpServletRequest request){
+        System.out.println();
+        List<Company> companies;
+        int sumPages ;
+        companies = companyService.SelectByName(name,0);
+        sumPages = (companyService.SelectCountByName(name)+19)/20;
+        request.setAttribute("sumPages",sumPages);
+        request.setAttribute("companies",companies);
+        request.setAttribute("name",name);
+        return "index";
+    }
     @ResponseBody
     @RequestMapping("/indexAJAX.do")
-    public List indexAJAX(int start,HttpServletRequest request){
+    public List indexAJAX(int start,String name,HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         Permission permission = (Permission)request.getSession().getAttribute("permission");
         List<Company> companies;
         if(permission.isReadall()){//如果当前权限是读取所有公司的权限
-            companies = companyService.selectAll(start,20);
+            if(name==null||"".equals(name)){
+                companies = companyService.selectAll(start,20);
+            }else {
+                companies= companyService.SelectByName(name,start);
+            }
         }else{
             companies  = companyService.findCompanyByUserIDLimit(user.getId(),start);
         }

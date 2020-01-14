@@ -25,9 +25,15 @@ public interface CompanyDao {
     @Select("select * from company limit  #{start}, #{pageSize} ")
     List<Company> selectAll(@Param("start") int start,@Param("pageSize") int pageSize);
 
-    @Select("select * from company where name like #{name}")
-    List<Company> selectByName(String name);
+    @Select("select * from company where name like #{name} limit #{start},20")
+    List<Company> selectByName(@Param("name") String name,@Param("start") int start);
 
     @Select("select count(id) from company")
     Integer getAllCompanyCount();
+
+    @Select("select count(id) from company where name like #{name}")
+    Integer selectCountByName(String companyName);
+
+    @Select("select * from company where name like #{name}")
+    List<Company> selectByNameNoPage(String companyName);
 }
