@@ -36,13 +36,29 @@ public class CompanyController {
      * @param request
      * @return java.lang.String
      */
-    @RequestMapping("/toCompany")
-    public String toCompany(HttpServletRequest request){
+    @ResponseBody
+    @RequestMapping("/toCompany.do")
+    public List<User> toCompany(HttpServletRequest request){
         //查询所有用户
         List<User> users = userService.findAllCus();
         //将用户存入
         request.setAttribute("users",users);
-        return "company";
+        return users;
+    }
+    /*
+     * 功能描述 检查公司名是否占用
+     * @Author bin
+     * @param name 
+     * @return java.lang.String        
+     */
+    @ResponseBody
+    @RequestMapping("examineCompanyNameAJAX.do")
+    public String examineCompanyNameAJAX(String name){
+        Company company = companyService.findByName(name);
+        if(company == null){
+            return "OK";
+        }
+        return "FAIL";
     }
 
     /*
@@ -52,15 +68,12 @@ public class CompanyController {
      * @param request
      * @return java.lang.String
      */
-    @RequestMapping("/createCompany.do")
-    public String createCompany(String name, HttpServletRequest request) throws Exception {
-        //判断name是否为空
-        if(name==null||"".equals(name)){
-            request.setAttribute("msg","公司名不能为空");
-            return "forward:index.do";
-        }
+    @ResponseBody
+    @RequestMapping("/createCompanyAJAX.do")
+    public String createCompanyAJAX(String name)  {
         //创建新公司对象
         Company company = new Company();
+
         try {
             //创建公司
             company.setName(name);
@@ -80,13 +93,10 @@ public class CompanyController {
                 folder.setCtime(new Timestamp(System.currentTimeMillis()));
                 folderService.insertFolder(folder);
             }
-            request.setAttribute("msg","创建成功");
-
         } catch (Exception e) {
-            request.setAttribute("msg","创建失败，检查是否有相同名称的公司");
-            e.printStackTrace();
+            return "FAIL";
         }
-        return "forward:index.do";
+        return "OK";
     }
 
     /*
@@ -99,9 +109,22 @@ public class CompanyController {
     @RequestMapping("/findUserCompanyAJAX.do")
     public List findUserCompany(int user_id){
         List<Company> userCompanies = companyService.findCompanyByUserID(user_id);
-        List list = new ArrayList();
-        list.add(userCompanies);
-        return list;
+        return userCompanies;
+    }
+    /*
+     * 功能描述 查询未绑定的的公司
+     * @Author bin
+     * @param name
+     * @param user_id
+     * @return java.util.List<com.bin.domain.Company>
+     */
+    @ResponseBody
+    @RequestMapping("findUnbindCompanyByNameAJAX.do")
+    public List<Company> findUnbindCompanyByName(String name, int user_id){
+        List<Company> companies = companyService.SelectByNameNoPage(name);
+        List<Company> companyByUserID = companyService.findCompanyByUserID(user_id);
+        companies.removeAll(companyByUserID);
+        return companies;
     }
 
     /*
@@ -109,23 +132,24 @@ public class CompanyController {
      * @Author bin
      * @param user_id
      * @param company_id
-     * @return void
+     * @return voiz
+     * 单个绑定
      */
     @ResponseBody
     @RequestMapping("/bindUserCompanyAJAX.do")
-    public String bindUserCompany(@RequestParam("user_id") int user_id, @RequestParam("companies_id") int[] companies_id){
+    public String bindUserCompany(int user_id, int [] companies_id){
         try {
-            for (int i = 0; i < companies_id.length; i++) {
+            for (int company_id : companies_id) {
                 User_Company user_company= new User_Company();
                 user_company.setUser_id(user_id);
-                user_company.setCompany_id(companies_id[i]);
+                user_company.setCompany_id(company_id);
                 user_company.setCtime(new Timestamp(System.currentTimeMillis()));
                 user_company_service.insertUserCompany(user_company);
             }
         } catch (Exception e) {
-            return "添加失败";
+            return "FAIL";
         }
-        return "添加成功";
+        return "OK";
     }
     /*
      * 功能描述 unbindUserCompany 解绑用户和公司
@@ -136,42 +160,18 @@ public class CompanyController {
      */
     @ResponseBody
     @RequestMapping("/unbindUserCompanyAJAX.do")
-    public String unbindUserCompany(@RequestParam("user_id") int user_id, @RequestParam("companies_id") int[] companies_id){
+    public String unbindUserCompany( int user_id, int[] companies_id){
         try {
-            for (int i = 0; i < companies_id.length; i++) {
+            for (int company_id : companies_id) {
                 User_Company user_company= new User_Company();
                 user_company.setUser_id(user_id);
-                user_company.setCompany_id(companies_id[i]);
-                user_company.setCtime(new Timestamp(System.currentTimeMillis()));
+                user_company.setCompany_id(company_id);
                 user_company_service.delUserCompany(user_company);
             }
-        } catch (Exception e) {
-            return "解绑失败";
-        }
-        return "解绑成功";
-    }
-    /*
-     * 功能描述 findCompanyByName
-     * @Author bin
-     * @param name
-     * @param user_id
-     * @return java.util.List<com.bin.domain.Company>
-     */
-    @ResponseBody
-    @RequestMapping("findCompanyByNameAJAX.do")
-    public List<Company> findCompanyByName(String name, int user_id){
-        List<Company> companies = companyService.SelectByNameNoPage(name);
-        List<Company> companyByUserID = companyService.findCompanyByUserID(user_id);
-        companies.removeAll(companyByUserID);
-        return companies;
-    }
 
-    @RequestMapping("")
-    public boolean companyName(String name){
-        Company c = companyService.findByName(name);
-        if(c==null){
-            return true;
+        } catch (Exception e) {
+            return "FAIL";
         }
-        return false;
+        return "OK";
     }
 }

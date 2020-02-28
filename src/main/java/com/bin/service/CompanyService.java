@@ -18,7 +18,6 @@ public class CompanyService {
      */
     public boolean registerCompany(Company company){
         int x = companyDao.insertCompany(company);
-        System.out.println(x);
         return  x==1?true:false;
     }
     /*
@@ -49,8 +48,8 @@ public class CompanyService {
      * @param  
      * @return java.util.List<com.bin.domain.Company>        
      */
-    public List<Company> selectAll(int start,int pageSize){
-        return companyDao.selectAll(start,pageSize);
+    public List<Company> selectAll(){
+        return companyDao.selectAll();
     }
     /*
      * 功能描述 通过公司名称查找公司 分页版
@@ -58,9 +57,9 @@ public class CompanyService {
      * @param companyName
      * @return java.util.List<com.bin.domain.Company>
      */
-    public List<Company> SelectByName(String companyName,int start){
+    public List<Company> SelectByName(String companyName){
         companyName="%"+companyName+"%";
-        return companyDao.selectByName(companyName,start);
+        return companyDao.selectByName(companyName);
     }
     //功能描述 通过公司名称查找公司 不分页版
     public List<Company> SelectByNameNoPage(String companyName){

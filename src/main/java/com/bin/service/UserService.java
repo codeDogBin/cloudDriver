@@ -64,10 +64,24 @@ public class UserService {
     public List<User> findAllCus(){
        return dao.findAllCus();
     }
+    /*
+     * 功能描述
+     * @Author bin
+     * @param null
+     * @return
+     */
+    public List<User> findByNameLike(String username) {
+        username = "%"+username+"%";
+        return dao.findByNameLike(username);
+    }
 
-
-    public List<User> findByName(String userName) {
-        userName = "%"+userName+"%";
-        return dao.findByName(userName);
+    /*
+     * 功能描述 findByName
+     * @Author bin
+     * @param username 
+     * @return com.bin.domain.User        
+     */
+    public User findByName(String username) {
+        return dao.findByName(username);
     }
 }

@@ -10,11 +10,11 @@ import java.io.IOException;
 public class SessionFilter implements Filter {
     //登录的几个访问地址
     public static String[] ignorePath = new String[]{
-            "/toLogin",
-            "/toRegister",
             "/login.do",
             "/register.do",
-            "/index.jsp"};
+            "/toRegister.do",
+            "/examineUsernameAJAX.do",
+            "/examineRegistrationCodeAJAX.do"};
     //对比地址的方法
     public static boolean isIgnore(String path){
         for (String temp : ignorePath) {
@@ -35,7 +35,7 @@ public class SessionFilter implements Filter {
         String path = request.getRequestURI();
         User user = (User)request.getSession().getAttribute("user");
         if(user == null && !isIgnore(path) ){
-            response.sendRedirect("/index.jsp");
+            response.sendRedirect("/login.html");
         }else{
             filterChain.doFilter(request,response);
         }

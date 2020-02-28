@@ -2,6 +2,8 @@ package com.bin.dao;
 
 import com.bin.domain.Folder;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -22,12 +24,15 @@ public interface FolderDao {
     Folder findByFidAsId(int fway_id);
 
     @Select("select * from folder where id = #{id} and state = 0 limit 1")
-    Folder findExpireByID(int id);
+    Folder findExpireByID(int fol_id);
+
+    @Select("select * from folder where id = #{id} and state = 1 limit 1")
+    Folder findByID(int fol_id);
 
     @Delete("delete from folder where id = #{fol_id}")
     void delFolById(int fol_id);
 
-    @Select("select * from folder where state = 0")
+    @Select("select * from folder where state = 0 order by del_time desc limit 1000 ")
     List<Folder> allExpire();
 
     @Select("select * from folder where state = 1")
@@ -41,6 +46,11 @@ public interface FolderDao {
 
     @Update("update folder set state = 1, name = #{name}  where id = #{id}")
     void recoverFol(Folder fol);
+
+    @Update("update folder set  name = #{name}  where id = #{fol_id}")
+    void renameFol(@Param("name") String name,@Param("fol_id") int fol_id);
+
+
 
     @Select("select * from folder where state = 0 and del_time < #{timestamp}")
     List<Folder> getExpireFol(Timestamp timestamp);

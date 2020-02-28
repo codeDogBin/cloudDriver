@@ -21,11 +21,11 @@ public interface CompanyDao {
     @Select("select c.* from user_company as uc, company as c where uc.user_id=#{user_id} and uc.company_id = c.id ")
     List<Company> findCompanyByUserID(@Param("user_id") int user_id);
 
-    @Select("select * from company limit  #{start}, #{pageSize} ")
-    List<Company> selectAll(@Param("start") int start,@Param("pageSize") int pageSize);
+    @Select("select * from company order by ctime desc limit 1000 ")
+    List<Company> selectAll();
 
-    @Select("select * from company where name like #{name} limit #{start},20")
-    List<Company> selectByName(@Param("name") String name,@Param("start") int start);
+    @Select("select * from company where name like #{name} limit 100")
+    List<Company> selectByName(@Param("name") String name);
 
     @Select("select count(id) from company")
     Integer getAllCompanyCount();
@@ -36,6 +36,6 @@ public interface CompanyDao {
     @Select("select * from company where name like #{name}")
     List<Company> selectByNameNoPage(String companyName);
 
-    @Select("select * from company where name = name")
+    @Select("select * from company where name = #{name} limit 1")
     Company findCompanyByName(String name);
 }

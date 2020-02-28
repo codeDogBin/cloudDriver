@@ -13,6 +13,7 @@ public class Fil implements Serializable {
     private Integer id;
     private String name;
     private String way;
+    private String imgWay;
     private Integer fol_id;
     private Timestamp ctime;
     private boolean state;

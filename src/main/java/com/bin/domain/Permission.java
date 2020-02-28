@@ -13,10 +13,8 @@ import java.sql.Timestamp;
 public class Permission implements Serializable {
     private Integer id;
     private String name;
-    private boolean readall;
-    private  boolean upload;
-    private boolean down;
-    private  boolean modify;
-    private boolean del;
+    private boolean admin;
+    private boolean staff;
+    private boolean accounting;
     private Timestamp ctime;
 }

@@ -24,7 +24,10 @@ public interface UserDao {
     @Select("select * from user where permission_id = 4")
     List<User> findAllCus();
 
-    @Select("select * from user where name like #{userName} and permission_id =4 limit 0, 20")
-    List<User> findByName(String userName);
+    @Select("select * from user where name like #{username} and permission_id =4 limit 100")
+    List<User> findByNameLike(String username);
+
+    @Select("select * from user where name = #{username} limit 1")
+    User findByName(String username);
 
 }

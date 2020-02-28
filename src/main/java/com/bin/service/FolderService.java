@@ -92,14 +92,20 @@ public class FolderService {
        return folderDao.findByNameFidCid(name,fway_id,company_id);
     }
 
-    public Folder findExpireByID(int id){
-        return folderDao.findExpireByID(id);
+    public Folder findExpireByID(int fol_id){
+        return folderDao.findExpireByID(fol_id);
+    }
+    public Folder findByID(int fol_id){
+        return folderDao.findByID(fol_id);
     }
 
     public List<Folder> getExpireFol(Timestamp timestamp){
         return folderDao.getExpireFol(timestamp);
     }
 
+    public void renameFol(String name,int folder_id){
+        folderDao.renameFol(name,folder_id);
+    }
 
     public void expireFol(Folder folder) {
         folderDao.expireFol(folder);

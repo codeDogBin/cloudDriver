@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -25,15 +28,11 @@ public class UserController {
     @Autowired
     private PermissionService permissionService;
 
-    @RequestMapping("/toLogin")
-    public String toLogin(){
-        return "login";
-    }
+//    @RequestMapping("/toLogin")
+//    public String toLogin(){
+//        return "login";
+//    }
 
-    @RequestMapping("/toRegister")
-    public  String toRegister(){
-        return "register";
-    }
     /*
      * 功能描述 登录
      * @Author bin
@@ -42,17 +41,17 @@ public class UserController {
      * @param request 
      * @return java.lang.String        
      */
+    @ResponseBody
     @RequestMapping("/login.do")
-    public String login(String name, String password, HttpServletRequest request){
-        User user = userService.login(name, password);
-        if(user ==null){
-            request.setAttribute("msg","登陆失败");
-            return "login";
+    public String login(String username, String password, HttpServletRequest request){
+        User user = userService.login(username, password);
+        if(user == null){
+            return "FAIL";
         }
         Permission permission = permissionService.findPermission(user.getPermission_id());
         request.getSession().setAttribute("permission",permission);
         request.getSession().setAttribute("user",user);
-        return "forward:index.do";
+        return "OK";
     }
     /*
      * 功能描述 前往主页 并且将公司信息存入requester
@@ -60,57 +59,88 @@ public class UserController {
      * @param request 
      * @return java.lang.String        
      */
-    @RequestMapping("/index.do")
-    public String index(HttpServletRequest request){
+    @ResponseBody
+    @RequestMapping("/toIndexAjax.do")
+    public Map index(HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         Permission permission = (Permission)request.getSession().getAttribute("permission");
         List<Company> companies;
-        int sumPages ;
-        if(permission.isReadall()){//如果当前权限是读取所有公司的权限
-            companies = companyService.selectAll(0,20);
-            Integer allCompanyCount = companyService.getAllCompanyCount();
-            sumPages = (allCompanyCount+19)/20;
+        if(permission.isStaff()){//如果当前权限是读取所有公司的权限
+            companies = companyService.selectAll();
         }else{
             companies  = companyService.findCompanyByUserIDLimit(user.getId(),0);
-            Integer companyCountByUserID = user_company_service.getCompanyCountByUserID(user.getId());
-            sumPages = (companyCountByUserID+19)/20;
         }
-        request.setAttribute("sumPages",sumPages);
-        request.setAttribute("companies",companies);
-        return "index";
-    }
-    @RequestMapping("/selectCompanyByNameIndex.do")
-    public String selectIndex(String name,HttpServletRequest request){
-        System.out.println();
-        List<Company> companies;
-        int sumPages ;
-        companies = companyService.SelectByName(name,0);
-        sumPages = (companyService.SelectCountByName(name)+19)/20;
-        request.setAttribute("sumPages",sumPages);
-        request.setAttribute("companies",companies);
-        request.setAttribute("name",name);
-        return "index";
-    }
-    @ResponseBody
-    @RequestMapping("/indexAJAX.do")
-    public List indexAJAX(int start,String name,HttpServletRequest request){
-        User user = (User)request.getSession().getAttribute("user");
-        Permission permission = (Permission)request.getSession().getAttribute("permission");
-        List<Company> companies;
-        if(permission.isReadall()){//如果当前权限是读取所有公司的权限
-            if(name==null||"".equals(name)){
-                companies = companyService.selectAll(start,20);
-            }else {
-                companies= companyService.SelectByName(name,start);
-            }
-        }else{
-            companies  = companyService.findCompanyByUserIDLimit(user.getId(),start);
-        }
-//        System.out.println(companies);
-        return companies;
+        Map<String,Object> map= new HashMap();
+        map.put("userName",user.getName());
+        map.put("permission",permission);
+        map.put("companies",companies);
+        return map;
     }
 
-   
+    @RequestMapping(value = "/toIndex.do",produces = "text/html;charset=UTF-8")
+    public String toIndex(){
+        return "main";
+    }
+
+    @RequestMapping(value = "/toRegister.do",produces = "text/html;charset=UTF-8")
+    public String toRegister(){
+        return "register";
+    }
+
+    @RequestMapping(value = "/dispatcher.do",produces = "text/html;charset=UTF-8")
+    public String toDiapatcherCrop(){
+        return "dispatcherCrop";
+    }
+
+    @RequestMapping(value = "/restore.do",produces = "text/html;charset=UTF-8")
+    public String toRestore(){
+        return "folder";
+    }
+
+
+
+    /*
+     * 功能描述 查询的接口
+     * @Author bin
+     * @param name
+     * @return java.util.Map
+     */
+    @ResponseBody
+    @RequestMapping("/selectCompanyByNameIndexAJAX.do")
+    public Map selectCompanyByNameIndexAJAX(String name){
+        List<Company> companies;
+        companies = companyService.SelectByName(name);
+        Map<String, Object> Map = new HashMap<>();
+        Map.put("companies",companies);
+        return Map;
+    }
+//    /*
+//     * 功能描述 主页的翻页工具
+//     * @Author bin
+//     * @param start
+//     * @param name
+//     * @param request
+//     * @return java.util.List
+//     */
+//    @ResponseBody
+//    @RequestMapping("/indexPageAJAX.do")
+//    public List indexAJAX(int start,String name,HttpServletRequest request){
+//        User user = (User)request.getSession().getAttribute("user");
+//        Permission permission = (Permission)request.getSession().getAttribute("permission");
+//        List<Company> companies;
+//        if(permission.isStaff()){//如果当前权限是读取所有公司的权限
+//            if(name==null||"".equals(name)){
+//                companies = companyService.selectAll(start,20);
+//            }else {
+//                companies= companyService.SelectByName(name,start);
+//            }
+//        }else{
+//            companies  = companyService.findCompanyByUserIDLimit(user.getId(),start);
+//        }
+//        return companies;
+//    }
+
+
     /*
      * 功能描述 注册
      * @Author bin
@@ -118,29 +148,81 @@ public class UserController {
     * @param password
     * @param permission_id
     * @param request
-     * @return java.lang.String        
+     * @return java.lang.String
      */
+    @ResponseBody
     @RequestMapping("/register.do")
-    public String register(String name,
+    public String register(String username,
                            String password,
-                           int permission_id,
-                           HttpServletRequest request){
+                           String registrationCode){
+        if(userService.findByName(username)!=null){
+            return "FAIL";
+        }
         User user = new User();
-        user.setName(name);
+        user.setName(username);
         user.setPassword(password);
-        user.setPermission_id(permission_id);
+        if (registrationCode.equals("myyg")){
+            user.setPermission_id(2);
+
+        }else if (registrationCode.equals("mycw")){
+            user.setPermission_id(3);
+        }else if(registrationCode.equals("myadmin")){
+            user.setPermission_id(1);
+        }else {
+            user.setPermission_id(4);
+        }
         boolean register = userService.register(user);
         if(register){
-            request.setAttribute("msg","注册成功");
-            return "index";
+            return "OK";
         }
-        request.setAttribute("msg","注册失败");
-        return "register";
+        return "FAIL";
+    }
+    /*
+     * 功能描述 注册检查用户名是否已存在
+     * @Author bin
+     * @param userName
+     * @return java.util.List
+     */
+    @ResponseBody
+    @RequestMapping("/examineUsernameAJAX.do")
+    public String examineUsernameAJAX(String username){
+        User user = userService.findByName(username);
+        if (user==null){
+            return "OK";
+        }
+        return "FAIL";
     }
     @ResponseBody
-    @RequestMapping("findUserByNameAJAX.do")
-    public List findUserByNameAJAX(String userName){
-        System.out.println(userName);
-        return userService.findByName(userName);
+    @RequestMapping("/examineRegistrationCodeAJAX.do")
+    public Map examineRegistrationCodeAJAX(String registrationCode){
+        Map<String,String> map= new HashMap();
+        if (registrationCode.equals("myyg")){
+            map.put("state","OK");
+            map.put("msg","注册为员工");
+            return map;
+        }else if (registrationCode.equals("mycw")){
+            map.put("state","OK");
+            map.put("msg","注册为财务");
+            return map;
+        }else if(registrationCode.equals("myadmin")){
+            map.put("state","OK");
+            map.put("msg","注册为管理员");
+            return map;
+        }
+        map.put("state","FAIL");
+        return map;
     }
+
+    /*
+     * 功能描述 模糊查找 用户名
+     * @Author bin
+     * @param username
+     * @return java.util.List
+     */
+    @ResponseBody
+    @RequestMapping("/findUserByNameLikeAJAX.do")
+    public List findUserByNameLikeAJAX(String username){
+        return userService.findByNameLike(username);
+    }
+
 }

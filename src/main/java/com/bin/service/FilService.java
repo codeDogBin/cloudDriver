@@ -60,7 +60,7 @@ public class FilService {
         filDao.delFilById(fil_id);
     }
     /*
-     * 功能描述 chongMing
+     * 功能描述 找到重名就后面加上副本
      * @Author bin
      * @param fil
      * @return com.bin.domain.Fil
@@ -69,7 +69,7 @@ public class FilService {
         Fil temp;
          temp = filDao.findByNameFidState(fil);
         while(temp != null){
-            fil.setName(fil.getName()+"_副本");
+            fil.setName(fil.getName().substring(0,fil.getName().lastIndexOf("."))+"_副本"+fil.getName().substring(fil.getName().lastIndexOf(".")));
             temp = filDao.findByNameFidState(fil);
         }
         return fil;
@@ -95,7 +95,20 @@ public class FilService {
         return filDao.findExpireById(fil_id);
     }
 
+
     public List<Fil> getFilByMonth(Timestamp startTime,Timestamp endTime){
         return  filDao.getFilByMonth(startTime,endTime);
+    }
+    public Fil findByNameFolid(String name, int fol_id){
+        return filDao.findByNameFolid(name,fol_id);
+    }
+
+
+    public void renameFil(String name, int fil_id) {
+        filDao.renameFil(name,fil_id);
+    }
+
+    public void updateImgWay(Fil fil) {
+        filDao.updateImgWay(fil);
     }
 }
